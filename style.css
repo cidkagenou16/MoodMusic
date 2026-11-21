@@ -1,0 +1,67 @@
+  /* Registering colours lets the whole page fade smoothly when the mood changes */
+  @property --bg1 { syntax: '<color>'; inherits: true; initial-value: #fff3c4; }
+  @property --bg2 { syntax: '<color>'; inherits: true; initial-value: #ffb59a; }
+  @property --ink { syntax: '<color>'; inherits: true; initial-value: #3b2a14; }
+  @property --accent { syntax: '<color>'; inherits: true; initial-value: #ff7a59; }
+
+  :root {
+    --bg1: #fff3c4; --bg2: #ffb59a; --ink: #3b2a14; --accent: #ff7a59;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    transition: --bg1 .8s, --bg2 .8s, --ink .8s, --accent .8s;
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  body {
+    margin: 0; min-height: 100vh;
+    background: linear-gradient(160deg, var(--bg1), var(--bg2)) fixed;
+    color: var(--ink);
+    font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+  }
+  main { max-width: 640px; margin: 0 auto; padding: 32px 20px 56px; }
+  h1 { font-size: 2rem; margin: 0 0 4px; }
+  .sub { margin: 0 0 20px; opacity: .8; }
+
+  /* Mood buttons */
+  .moods { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+  .moods button {
+    font: inherit; font-weight: 500; cursor: pointer;
+    padding: 10px 16px; border-radius: 999px;
+    border: 2px solid var(--ink); background: transparent; color: var(--ink);
+    transition: background .2s, color .2s;
+  }
+  .moods button[aria-pressed="true"] { background: var(--ink); color: var(--bg1); }
+  button:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+  /* Breathing circle: the main visual */
+  .breath { display: grid; place-items: center; height: 220px; margin-bottom: 8px; }
+  .circle {
+    width: 150px; height: 150px; border-radius: 50%;
+    background: var(--accent); opacity: .85;
+    display: grid; place-items: center; text-align: center;
+    font-weight: 500; color: var(--bg1);
+    animation: breathe 8s ease-in-out infinite;
+  }
+  @keyframes breathe { 0%, 100% { transform: scale(.65); } 50% { transform: scale(1.25); } }
+
+  /* Quote */
+  blockquote {
+    font-family: 'Newsreader', Georgia, serif; font-style: italic;
+    font-size: 1.7rem; line-height: 1.35; margin: 0 0 16px; min-height: 5.5em;
+  }
+  .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 36px; }
+  .actions button {
+    font: inherit; cursor: pointer; padding: 9px 16px; border-radius: 8px;
+    border: 2px solid var(--ink); background: var(--ink); color: var(--bg1);
+  }
+  .actions button.ghost { background: transparent; color: var(--ink); }
+
+  h2 { font-size: 1.1rem; margin: 0 0 10px; }
+  ul { list-style: none; padding: 0; margin: 0 0 32px; }
+  li { padding: 10px 0; border-bottom: 1px solid color-mix(in srgb, var(--ink) 25%, transparent); }
+  li a { color: var(--ink); font-weight: 500; }
+  .saved li { display: flex; justify-content: space-between; gap: 12px; font-family: 'Newsreader', Georgia, serif; font-style: italic; }
+  .saved button { font: inherit; font-size: .85rem; cursor: pointer; background: none; border: none; color: var(--ink); text-decoration: underline; }
+  .empty { opacity: .7; }
+
+  @media (prefers-reduced-motion: reduce) { .circle { animation: none; } :root { transition: none; } }
